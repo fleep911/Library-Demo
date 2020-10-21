@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Book Overview</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -17,9 +17,6 @@
         <th>
             Author Name
         </th>
-        <th>
-            Date Created
-        </th>
         <th></th>
     </tr>
 
@@ -31,9 +28,6 @@
         <td>
             @Html.DisplayFor(modelItem => item.AuthorFirstName)
             @Html.DisplayFor(modelItem => item.AuthorLastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateCreated).ToString().Split()[0]
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.id }) |

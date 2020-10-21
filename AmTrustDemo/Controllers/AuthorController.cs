@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 
 namespace AmTrustDemo.Controllers
 {
@@ -22,7 +23,9 @@ namespace AmTrustDemo.Controllers
         // GET: Author/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            DataAccess db = new DataAccess();
+            authors = db.GetAuthorById(id);
+            return View(authors.FirstOrDefault());
         }
 
         // GET: Author/Create
@@ -33,11 +36,12 @@ namespace AmTrustDemo.Controllers
 
         // POST: Author/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(string AuthorFirstName, string AuthorLastName)
         {
             try
             {
-                // TODO: Add insert logic here
+                DataAccess db = new DataAccess();
+                authors = db.AuthorCreate(AuthorFirstName, AuthorLastName);
 
                 return RedirectToAction("Index");
             }
@@ -50,21 +54,29 @@ namespace AmTrustDemo.Controllers
         // GET: Author/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            DataAccess db = new DataAccess();
+            authors = db.GetAuthorById(id);
+            return View(authors.FirstOrDefault());
         }
 
         // POST: Author/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, string AuthorFirstName, string AuthorLastName)
         {
             try
             {
                 // TODO: Add update logic here
+                DataAccess db = new DataAccess();
+                authors = db.AuthorUpdate(id, AuthorFirstName, AuthorLastName);
 
                 return RedirectToAction("Index");
+
+
             }
-            catch
+            catch (Exception e )
             {
+                
+                
                 return View();
             }
         }
@@ -72,20 +84,27 @@ namespace AmTrustDemo.Controllers
         // GET: Author/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            DataAccess db = new DataAccess();
+            authors = db.GetAuthorById(id);
+            return View(authors.FirstOrDefault());
         }
 
         // POST: Author/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id, string delete)
         {
             try
             {
                 // TODO: Add delete logic here
 
+                DataAccess db = new DataAccess();
+
+                db.AuthorDelete(id);
+
+
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception e)
             {
                 return View();
             }

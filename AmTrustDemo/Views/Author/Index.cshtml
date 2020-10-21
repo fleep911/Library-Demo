@@ -12,13 +12,10 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.AuthorFirstName)
+            Author First Name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AuthorLastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreateDate)
+            Author Last Name
         </th>
         <th></th>
     </tr>
@@ -30,9 +27,6 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.AuthorLastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreateDate)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.id }) |

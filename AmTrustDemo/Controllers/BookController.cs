@@ -20,14 +20,14 @@ namespace AmTrustDemo.Controllers
         }
 
         // GET: Book by Author
-        //public ActionResult IndexByAuthor()
-        //{
-        //    DataAccess db = new DataAccess();
-        //    books = db.GetBooks();
-            
+        public ActionResult AuthorIndex()
+        {
+            DataAccess db = new DataAccess();
+            books = db.GetBooksByAuthor();
 
-        //    return View(books.ToList());
-        //}
+
+            return View(books.ToList());
+        }
 
         // GET: Book/Details/5
         public ActionResult Details(int id)

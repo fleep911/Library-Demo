@@ -11,7 +11,6 @@ namespace AmTrustDemo.Models
         public int id { get; set; }
         public string BookName { get; set; }
         public int AuthorId { get; set; }
-        public DateTime DateCreated { get; set; }
         public string AuthorFirstName { get; set; }
         public string AuthorLastName { get; set; }
     }

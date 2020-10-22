@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 using System.Web.UI;
 
 namespace AmTrustDemo.Controllers
@@ -16,7 +17,6 @@ namespace AmTrustDemo.Controllers
         {
             DataAccess db = new DataAccess();
             authors = db.GetAuthor();
-
             return View(authors.ToList());
         }
 
@@ -42,7 +42,6 @@ namespace AmTrustDemo.Controllers
             {
                 DataAccess db = new DataAccess();
                 authors = db.AuthorCreate(AuthorFirstName, AuthorLastName);
-
                 return RedirectToAction("Index");
             }
             catch
@@ -65,18 +64,12 @@ namespace AmTrustDemo.Controllers
         {
             try
             {
-                // TODO: Add update logic here
                 DataAccess db = new DataAccess();
                 authors = db.AuthorUpdate(id, AuthorFirstName, AuthorLastName);
-
                 return RedirectToAction("Index");
-
-
             }
             catch (Exception e )
             {
-                
-                
                 return View();
             }
         }
@@ -95,18 +88,13 @@ namespace AmTrustDemo.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
-
                 DataAccess db = new DataAccess();
-
                 db.AuthorDelete(id);
-
-
                 return RedirectToAction("Index");
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return View();
+                return RedirectToAction("Index");
             }
         }
     }

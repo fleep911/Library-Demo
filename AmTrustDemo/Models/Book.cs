@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using System.Web.Profile;
 
 namespace AmTrustDemo.Models
@@ -14,4 +15,5 @@ namespace AmTrustDemo.Models
         public string AuthorFirstName { get; set; }
         public string AuthorLastName { get; set; }
     }
+
 }

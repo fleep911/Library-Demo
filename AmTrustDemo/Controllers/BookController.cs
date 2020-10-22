@@ -1,8 +1,11 @@
 ﻿using AmTrustDemo.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 
 namespace AmTrustDemo.Controllers
@@ -40,17 +43,21 @@ namespace AmTrustDemo.Controllers
         // GET: Book/Create
         public ActionResult Create()
         {
+            DataAccess db = new DataAccess();
+            List<Author> authors = new List<Author>();
+            var authorList = db.GetAuthor();
+            ViewBag.AuthorId = new SelectList(authorList, "Id", "AuthorLastName");
             return View();
         }
 
         // POST: Book/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(string BookName, int AuthorId)
         {
             try
             {
-                // TODO: Add insert logic here
-
+                DataAccess db = new DataAccess();
+                books = db.BookCreate(BookName, AuthorId);
                 return RedirectToAction("Index");
             }
             catch
@@ -64,17 +71,23 @@ namespace AmTrustDemo.Controllers
         {
             DataAccess db = new DataAccess();
             books = db.GetBookById(id);
+
+            List<Author> authors = new List<Author>();
+            var authorList = db.GetAuthor();
+            ViewBag.AuthorId = new SelectList(authorList, "Id", "AuthorLastName" );
+
             return View(books.FirstOrDefault());
         }
 
         // POST: Book/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, string BookName, int AuthorId)
         {
             try
             {
-                // TODO: Add update logic here
-
+                List<Book> books = new List<Book>();
+                DataAccess db = new DataAccess();
+                books = db.BookUpdate(id, BookName, AuthorId);
                 return RedirectToAction("Index");
             }
             catch
@@ -93,12 +106,12 @@ namespace AmTrustDemo.Controllers
 
         // POST: Book/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id, string delete)
         {
             try
             {
-                // TODO: Add delete logic here
-
+                DataAccess db = new DataAccess();
+                db.BookDelete(id);
                 return RedirectToAction("Index");
             }
             catch
@@ -106,5 +119,6 @@ namespace AmTrustDemo.Controllers
                 return View();
             }
         }
+
     }
 }

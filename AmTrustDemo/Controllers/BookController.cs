@@ -45,8 +45,8 @@ namespace AmTrustDemo.Controllers
         {
             DataAccess db = new DataAccess();
             List<Author> authors = new List<Author>();
-            var authorList = db.GetAuthor();
-            ViewBag.AuthorId = new SelectList(authorList, "Id", "AuthorLastName");
+            var authorList = db.GetAuthorFullName();
+            ViewBag.AuthorId = new SelectList(authorList, "Id", "AuthorFullName");
             return View();
         }
 
@@ -60,7 +60,7 @@ namespace AmTrustDemo.Controllers
                 books = db.BookCreate(BookName, AuthorId);
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
                 return View();
             }
@@ -73,8 +73,8 @@ namespace AmTrustDemo.Controllers
             books = db.GetBookById(id);
 
             List<Author> authors = new List<Author>();
-            var authorList = db.GetAuthor();
-            ViewBag.AuthorId = new SelectList(authorList, "Id", "AuthorLastName" );
+            var authorList = db.GetAuthorFullName();
+            ViewBag.AuthorId = new SelectList(authorList, "Id", "AuthorFullName");
 
             return View(books.FirstOrDefault());
         }
@@ -90,7 +90,7 @@ namespace AmTrustDemo.Controllers
                 books = db.BookUpdate(id, BookName, AuthorId);
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
                 return View();
             }
@@ -114,11 +114,12 @@ namespace AmTrustDemo.Controllers
                 db.BookDelete(id);
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
                 return View();
             }
         }
+
 
     }
 }

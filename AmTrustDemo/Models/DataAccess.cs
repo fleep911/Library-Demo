@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Optimization;
 using Dapper;
 
 
@@ -14,14 +15,14 @@ namespace AmTrustDemo.Models
     public class DataAccess
     {
         /// <summary>
-        /// returns all books from the database
+        /// returns all books from the database 
         /// </summary>
         /// <returns></returns>
         public List<Book> GetBooks()
         {
             using (IDbConnection connection = new SqlConnection(Helper.CnnVal("Books_DB")))
             {
-                return connection.Query<Book>("dbo.spGet_Book").ToList();
+                return connection.Query<Book>("dbo.spBook_GET").ToList();
             }
         }
 
@@ -33,7 +34,7 @@ namespace AmTrustDemo.Models
         {
             using (IDbConnection connection = new SqlConnection(Helper.CnnVal("Books_DB")))
             {
-                return connection.Query<Book>("dbo.spGet_BookByAuthor").ToList();
+                return connection.Query<Book>("dbo.spBook_GET_ByAuthor").ToList();
             }
         }
 
@@ -46,7 +47,7 @@ namespace AmTrustDemo.Models
         {
             using (IDbConnection connection = new SqlConnection(Helper.CnnVal("Books_DB")))
             {
-                var output = connection.Query<Book>("dbo.spGet_BookById @BookId", new { Bookid }).ToList();
+                var output = connection.Query<Book>("dbo.spBook_GET_ById @BookId", new { Bookid }).ToList();
                 return output;
             }
 
@@ -63,7 +64,8 @@ namespace AmTrustDemo.Models
             using (IDbConnection connection = new SqlConnection(Helper.CnnVal("Books_DB")))
             {
                 List<Book> books = new List<Book>();
-                connection.Query<Author>($"INSERT INTO dbo.Books(BookName, AuthorID)VALUES(@BookName,@AuthorId)", new { BookName, AuthorId });
+                //connection.Query<Book>($"INSERT INTO dbo.Books(BookName, AuthorID)VALUES(@BookName,@AuthorId)", new { BookName, AuthorId });
+                connection.Query<Book>("dbo.spBook_INSERT @BookName, @AuthorId", new { BookName, AuthorId });
                 return books;
             }
         }
@@ -80,7 +82,9 @@ namespace AmTrustDemo.Models
             using (IDbConnection connection = new SqlConnection(Helper.CnnVal("Books_DB")))
             {
                 List<Book> books = new List<Book>();
-                connection.Query<Author>($"UPDATE dbo.Books SET BookName = @BookName, AuthorId = @AuthorId WHERE id = @Id", new { BookName, AuthorId, id });
+                //connection.Query<Book>($"UPDATE dbo.Books SET BookName = @BookName, AuthorId = @AuthorId WHERE id = @Id", new { BookName, AuthorId, id });
+                connection.Query<Book>("dbo.spBook_UPDATE @BookName, @AuthorId, @id", new { BookName, AuthorId, id });
+
                 return books;
 
             }
@@ -94,7 +98,9 @@ namespace AmTrustDemo.Models
         {
             using (IDbConnection connection = new SqlConnection(Helper.CnnVal("Books_DB")))
             {
-                var output = connection.Execute($"DELETE FROM dbo.Books WHERE id = @BookID", new { BookId });
+                //var output = connection.Execute($"DELETE FROM dbo.Books WHERE id = @BookID", new { BookId });
+                var output = connection.Execute("dbo.spBook_DELETE @BookId", new { BookId });
+
             }
         }
 
@@ -107,9 +113,22 @@ namespace AmTrustDemo.Models
         {
             using (IDbConnection connection = new SqlConnection(Helper.CnnVal("Books_DB")))
             {
-                return connection.Query<Author>("dbo.spGet_Author").ToList();
+                return connection.Query<Author>("dbo.spAuthor_GET").ToList();
             }
         }
+
+        /// <summary>
+        /// returns all author first and last name data from the database
+        /// </summary>
+        /// <returns></returns>
+        public List<Author> GetAuthorFullName()
+        {
+            using (IDbConnection connection = new SqlConnection(Helper.CnnVal("Books_DB")))
+            {
+                return connection.Query<Author>("dbo.spAuthor_GET_FullName").ToList();
+            }
+        }
+
         /// <summary>
         /// adds author data to the database
         /// </summary>
@@ -121,7 +140,9 @@ namespace AmTrustDemo.Models
             using (IDbConnection connection = new SqlConnection(Helper.CnnVal("Books_DB")))
             {
                 List<Author> authors = new List<Author>();
-                connection.Query<Author>($"INSERT INTO dbo.Authors(AuthorFirstName,AuthorLastName)VALUES(@AuthorFirstName,@AuthorLastName)", new { authorFirstName, authorLastName });
+                //connection.Query<Author>($"INSERT INTO dbo.Authors(AuthorFirstName,AuthorLastName)VALUES(@AuthorFirstName,@AuthorLastName)", new { authorFirstName, authorLastName });
+                connection.Query<Book>("dbo.spAuthor_INSERT @AuthorFirstName, @AuthorLastName", new { authorFirstName, authorLastName });
+
                 return authors;
 
             }
@@ -139,7 +160,8 @@ namespace AmTrustDemo.Models
             using (IDbConnection connection = new SqlConnection(Helper.CnnVal("Books_DB")))
             {
                 List<Author> authors = new List<Author>();
-                connection.Query<Author>($"UPDATE dbo.Authors SET AuthorFirstName = @AuthorFirstName, AuthorLastName = @AuthorLastName WHERE id = @AuthorId", new { AuthorFirstName, AuthorLastName, AuthorId });
+                //connection.Query<Author>($"UPDATE dbo.Authors SET AuthorFirstName = @AuthorFirstName, AuthorLastName = @AuthorLastName WHERE id = @AuthorId", new { AuthorFirstName, AuthorLastName, AuthorId });
+                connection.Query<Book>("dbo.spAuthor_UPDATE @AuthorFirstName, @AuthorLastName, @AuthorId", new { AuthorFirstName, AuthorLastName, AuthorId });
                 return authors;
 
             }
@@ -154,6 +176,8 @@ namespace AmTrustDemo.Models
             using (IDbConnection connection = new SqlConnection(Helper.CnnVal("Books_DB")))
             {
                 var output = connection.Execute($"DELETE FROM dbo.Authors WHERE id = @AuthorID", new { AuthorId });
+                //var output = connection.Execute("dbo.spAuthor_DELETE @AuthorId", new { AuthorId });
+
             }
         }
 
@@ -166,7 +190,7 @@ namespace AmTrustDemo.Models
         {
             using (IDbConnection connection = new SqlConnection(Helper.CnnVal("Books_DB")))
             {
-                return connection.Query<Author>("dbo.spGet_AuthorById @AuthorId", new { AuthorId }).ToList();
+                return connection.Query<Author>("dbo.spAuthor_GET_ById @AuthorId", new { AuthorId }).ToList();
             }
         }
 

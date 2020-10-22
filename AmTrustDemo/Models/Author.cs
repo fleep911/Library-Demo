@@ -11,5 +11,7 @@ namespace AmTrustDemo.Models
         public int? id { get; set; } 
         public string AuthorFirstName { get; set; }
         public string AuthorLastName { get; set; }
+        public string AuthorFullName { get; set; }
+
     }
 }
